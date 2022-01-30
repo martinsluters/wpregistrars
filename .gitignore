@@ -1,0 +1,8 @@
+.DS_Store
+/composer.lock
+/tests/.env
+/tests/cache
+/tests/wordpress
+/vendor
+*.cache
+.env

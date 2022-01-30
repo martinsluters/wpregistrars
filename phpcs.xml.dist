@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="WPRegistrars Ruleset">
+
+    <config name="testVersion" value="7.4-"/>
+
+    <arg name="extensions" value="php" />
+    <arg name="colors" />
+    <arg value="s" /><!-- Show sniff codes in all reports. -->
+    <arg value="n" /><!-- Do not show warnings. -->
+
+    <rule ref="PHPCompatibility"/>
+
+    <rule ref="WordPress-Extra">
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+        <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+        <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+    </rule>
+
+    <rule ref="NeutronStandard"/>
+
+    <rule ref="WordPress-Docs">
+        <exclude name="Squiz.Commenting.FileComment" />
+    </rule>
+
+    <exclude-pattern>/tests/wp-tests-config.php</exclude-pattern>
+    <exclude-pattern>/tests/wordpress</exclude-pattern>
+    <exclude-pattern>/tests/cache</exclude-pattern>
+    <exclude-pattern>/vendor</exclude-pattern>
+
+</ruleset>

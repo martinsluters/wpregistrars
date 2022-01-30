@@ -1,0 +1,42 @@
+name: Test & Lint on schedule
+
+on:
+  schedule:
+    - cron: '0 3 * * 4'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        php-versions: ['8.1', '8.0', '7.4']
+      fail-fast: false
+    runs-on: ubuntu-latest
+    name: PHP ${{ matrix.php-versions }}
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@2.16.0
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mysqli
+
+    - name: Install Dependencies
+      run: |
+        sudo systemctl start mysql.service
+        mysqladmin -uroot -proot create wordpress_test
+        composer update --prefer-dist
+        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="dev-master"
+
+    - name: Debugging
+      run: |
+        composer --version
+        mysql --version
+        composer show roots/wordpress
+        php --version
+        php -m
+
+    - name: Run Integration Tests
+      run: composer test:it

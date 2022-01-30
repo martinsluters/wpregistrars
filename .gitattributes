@@ -1,0 +1,15 @@
+* text=auto
+
+# Directories
+/.github export-ignore
+/tests export-ignore
+
+# Files
+/.editorconfig export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.php-cs-fixer.cache export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/phpcs.xml.dist export-ignore
+/phpunit.xml.dist export-ignore
+/.env.github.dist export-ignore

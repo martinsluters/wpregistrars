@@ -1,0 +1,87 @@
+{
+    "name": "martinsluters/wpregistrars",
+    "type": "library",
+    "description": "A library that allows to register WordPress post types and taxonomies in bulk.",
+    "license": "GPL-2.0+",
+    "keywords": [
+        "bulk",
+        "register",
+        "post type",
+        "taxonomy"
+    ],
+    "authors": [
+        {
+            "name": "Martins Luters",
+            "email": "luters.martins@gmail.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "roots/wordpress-core-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpunit/phpunit": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "martinsluters\\WPRegistrars\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "martinsluters\\WPRegistrars\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "wordpress-install-dir": "tests/wordpress"
+    },
+    "require-dev": {
+        "10up/wp_mock": "0.4.2",
+        "automattic/phpcs-neutron-standard": "^1.7",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "friendsofphp/php-cs-fixer": "^3.5",
+        "johnbillion/falsey-assertequals-detector": "^3",
+        "phpcompatibility/phpcompatibility-wp": "^2",
+        "phpunit/phpunit": "^9",
+        "roots/wordpress": "^5.9.0",
+        "vlucas/phpdotenv": "^5.4",
+        "wp-coding-standards/wpcs": "^2.2",
+        "wp-phpunit/wp-phpunit": "^5.9",
+        "yoast/phpunit-polyfills": "^1.0",
+        "yoast/wp-test-utils": "^1.0"
+    },
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "doctrine/inflector": "^2.0"
+    },
+    "scripts": {
+        "optimize": [
+            "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php"
+        ],
+        "pre-install-cmd": [
+            "@copy:env"
+        ],
+        "pre-update-cmd": [
+            "@copy:env"
+        ],
+        "copy:env": [
+            "php -r \"file_exists('.env') || copy('.env.github.dist', '.env');\""
+        ],
+        "test:cs": [
+            "vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
+        ],
+        "test:ut": [
+            "vendor/bin/phpunit --bootstrap=tests/Unit/bootstrap-ut.php --verbose --colors=always --testsuite unit"
+        ],
+        "test:it": [
+            "vendor/bin/phpunit --bootstrap=tests/Integration/bootstrap-it.php --verbose --colors=always --testsuite integration"
+        ],
+        "test": [
+            "@test:cs",
+            "@test:ut",
+            "@test:it"
+        ]
+    }
+}

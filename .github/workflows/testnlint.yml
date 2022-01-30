@@ -1,0 +1,58 @@
+name: Test & Lint
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        php-versions: ['8.0', '7.4']
+        wp: ['5.8', '5.9']
+        include:
+          - php-versions: '8.1'
+            wp: '5.9'
+      fail-fast: false
+    runs-on: ubuntu-latest
+    name: PHP ${{ matrix.php-versions }} / WP ${{ matrix.wp }}
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@2.16.0
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mysqli
+
+    - name: Install Dependencies
+      run: |
+        sudo systemctl start mysql.service
+        composer update --prefer-dist
+        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="~${{ matrix.wp }}.0"
+        mysqladmin -uroot -proot create wordpress_test
+
+    - name: Debugging
+      run: |
+        composer --version
+        mysql --version
+        composer show roots/wordpress
+        php --version
+        php -m
+
+    - name: Run Unit Tests
+      run: composer test:ut
+
+    - name: Run Integration Tests
+      run: composer test:it
+
+    - name: Sniff standards
+      if: ${{ '7.4' == matrix.php-versions && '5.9' == matrix.wp }}
+      run: composer test:cs
