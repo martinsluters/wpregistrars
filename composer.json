@@ -70,7 +70,7 @@
             "php -r \"file_exists('.env') || copy('.env.github.dist', '.env');\""
         ],
         "test:cs": [
-            "vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
+            "vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
         ],
         "test:ut": [
             "vendor/bin/phpunit --bootstrap=tests/Unit/bootstrap-ut.php --verbose --colors=always --testsuite unit"
